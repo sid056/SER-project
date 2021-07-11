@@ -1,0 +1,15 @@
+<html>
+    <body>
+        <form action='/' method="POST" enctype="multipart/form-data" >
+            {% if result %}
+                File : <input type="file" name="file" value='{{ file }}'> &nbsp; &nbsp;
+                <input type="submit" value ="Predict" ><br><br>
+                <b>{{ result }}</b>
+            {% else %}
+                File : <input type="file" name="file"> &nbsp; &nbsp;
+                <input type="submit" value ="Predict" >
+            {% endif %}
+        </form>
+
+    </body>
+</html>
