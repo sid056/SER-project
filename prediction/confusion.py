@@ -98,47 +98,46 @@ emotion_dict = {
     }
 }
 
-
-itr = 0
-
-pklfile = os.path.abspath(os.path.join(os.pardir)) + \
-    '/Emotion_Voice_Detection_Model_dataset.pkl'
-with open(pklfile, 'rb') as file:
-    Emotion_Voice_Detection_Model = pickle.load(file)
-
-pklfile = os.path.abspath(os.path.join(os.pardir)) + \
-    "/final_x_train.pkl"
-with open(pklfile, 'rb') as file:
-    x_values = pickle.load(file)
-
-pklfile = os.path.abspath(os.path.join(os.pardir)) + \
-    "/final_x_test.pkl"
-with open(pklfile, 'rb') as file:
-    x_test = pickle.load(file)
-
-pklfile = os.path.abspath(os.path.join(os.pardir)) + \
-    "/final_y_test.pkl"
-with open(pklfile, 'rb') as file:
-    y = pickle.load(file)
-
-scaler = MinMaxScaler()
-x_new = scaler.fit(x_values)
-
-for i in range(len(x_test)):
-
-    emotion = y[i]
-
-    feature = [x_test[i]]
-    feature = np.array(feature)
-    feature = scaler.transform(feature)
-
-    pred_emotion = Emotion_Voice_Detection_Model.predict(feature)[0]
-
-    emotion_dict[emotion][pred_emotion] = emotion_dict[emotion][pred_emotion] + 1
-
-    if itr == 100:
-        print(emotion_dict)
-    itr = itr + 1
+path = os.path.dirname(os.getcwd())
 
 
-print(emotion_dict)
+def create_confusion_matrix():
+
+    itr = 0
+
+    pklfile = path + '/Emotion_Voice_Detection_Model_dataset.pkl'
+    with open(pklfile, 'rb') as file:
+        Emotion_Voice_Detection_Model = pickle.load(file)
+
+    pklfile = path + "/final_x_train.pkl"
+    with open(pklfile, 'rb') as file:
+        x_values = pickle.load(file)
+
+    pklfile = path + "/final_x_test.pkl"
+    with open(pklfile, 'rb') as file:
+        x_test = pickle.load(file)
+
+    pklfile = path + "/final_y_test.pkl"
+    with open(pklfile, 'rb') as file:
+        y = pickle.load(file)
+
+    scaler = MinMaxScaler()
+    x_new = scaler.fit(x_values)
+
+    for i in range(len(x_test)):
+
+        emotion = y[i]
+
+        feature = [x_test[i]]
+        feature = np.array(feature)
+        feature = scaler.transform(feature)
+
+        pred_emotion = Emotion_Voice_Detection_Model.predict(feature)[0]
+
+        emotion_dict[emotion][pred_emotion] = emotion_dict[emotion][pred_emotion] + 1
+
+        if itr == 100:
+            print(emotion_dict)
+        itr = itr + 1
+
+    print(emotion_dict)

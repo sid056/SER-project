@@ -1,6 +1,8 @@
+import os
 from flask import Flask, render_template
 from flask.globals import request
 from model import model
+
 
 app = Flask(__name__)
 
@@ -11,10 +13,11 @@ def predict_fn():
         result = request.files
         inp = result['file']
         inp.save('input.wav')
-        path = '/home/sidharth/Desktop/S8project/SER project/input.wav'
+        path = os.getcwd()
+        aud_path = path+'/input.wav'
         print("hello")
         emotion = model.predict_emotion(
-            path, sampling_rate=16384, fft_length=16384)
+            aud_path, sampling_rate=16384, fft_length=16384, path=path)
         print(emotion)
         return render_template("predict.html", result=emotion[0])
     else:

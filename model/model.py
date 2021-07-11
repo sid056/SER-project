@@ -17,9 +17,9 @@ from scipy import signal
 import pickle
 from sklearn.svm import SVC
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.svm import SVC
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.svm import SVC
+
+
+base_path = os.path.dirname(os.getcwd())
 
 
 def power_spectrum(signal, fft_points=512):
@@ -157,12 +157,15 @@ def pre_process(file, NFFT=16384):
     return yf.T, sr
 
 
-def predict_emotion(aud, sampling_rate, fft_length, num_cepstral=16, num_filters=128):
+def predict_emotion(aud, sampling_rate, fft_length, num_cepstral=16, num_filters=128, path=None):
 
-    with open("/home/sidharth/Desktop/S8project/code/site/Emotion_Voice_Detection_Model_dataset.pkl", 'rb') as file:
+    if path == None:
+        path = base_path
+
+    with open(path+"/Emotion_Voice_Detection_Model_dataset.pkl", 'rb') as file:
         Emotion_Voice_Detection_Model = pickle.load(file)
 
-    with open("/home/sidharth/Desktop/S8project/SER project/final_x.pkl", 'rb') as file:
+    with open(path+"/final_x.pkl", 'rb') as file:
         x_values = pickle.load(file)
 
     scaler = MinMaxScaler()
@@ -194,7 +197,7 @@ def create_model():
     }
 
     x, y = [], []
-    for file in glob.glob("/home/sidharth/Desktop/S8project/code/site/dataset/*.wav"):
+    for file in glob.glob(path+"/dataset/*.wav"):
 
         basename = os.path.basename(file)
         emotion = emotions[basename.split("-")[2]]
@@ -231,26 +234,26 @@ def create_model():
 
             max_accuracy = accuracy
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/Emotion_Voice_Detection_Model_dataset.pkl"
+            Pkl_Filename = base_path+"/Emotion_Voice_Detection_Model_dataset.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(model, file)
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/final_x_train.pkl"
+            Pkl_Filename = base_path+"/final_x_train.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(x_train, file)
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/final_x_test.pkl"
+            Pkl_Filename = base_path+"/final_x_test.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(x_test, file)
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/final_y_train.pkl"
+            Pkl_Filename = base_path+"/final_y_train.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(y_train, file)
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/final_y_test.pkl"
+            Pkl_Filename = base_path+"/final_y_test.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(y_test, file)
 
-            Pkl_Filename = "/home/sidharth/Desktop/S8project/code/site/final_x.pkl"
+            Pkl_Filename = base_path+"/final_x.pkl"
             with open(Pkl_Filename, 'wb') as file:
                 pickle.dump(x, file)

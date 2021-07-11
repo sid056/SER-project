@@ -1,18 +1,22 @@
+from os import getcwd
 import pickle
+import os
 
-with open("/home/sidharth/Desktop/S8project/code/site/Emotion_Voice_Detection_Model_dataset.pkl", 'rb') as file:
+path = os.path.dirname(os.getcwd())
+
+with open(path+"/Emotion_Voice_Detection_Model_dataset.pkl", 'rb') as file:
     model = pickle.load(file)
 
-with open("/home/sidharth/Desktop/S8project/SER project/final_x_train.pkl", 'rb') as file:
+with open(path+"/final_x_train.pkl", 'rb') as file:
     x_train = pickle.load(file)
 
-with open("/home/sidharth/Desktop/S8project/SER project/final_x_test.pkl", 'rb') as file:
+with open(path+"/final_x_test.pkl", 'rb') as file:
     x_test = pickle.load(file)
 
-with open("/home/sidharth/Desktop/S8project/SER project/final_y_train.pkl", 'rb') as file:
+with open(path+"/final_y_train.pkl", 'rb') as file:
     y_train = pickle.load(file)
 
-with open("/home/sidharth/Desktop/S8project/SER project/final_y_test.pkl", 'rb') as file:
+with open(path+"/final_y_test.pkl", 'rb') as file:
     y_test = pickle.load(file)
 
 model.fit(x_train, y_train)
